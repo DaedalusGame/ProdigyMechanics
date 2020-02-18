@@ -1,0 +1,16 @@
+{
+  "name": "Hot Air Engine",
+  "icon": "prodigymechanics:hot_air_engine",
+  "category": "hot_air",
+  "advancement": "prodigytech:main/aeroheater",
+  "pages": [
+    {
+      "type": "text",
+      "text": "The $(item)Hot Air Engine$() produces kinetic energy from heat energy. It will output this kinetic energy in form of rotation on its front face. The produced mechanical power increases as it gets hotter and hotter."
+    },
+    {
+      "type": "crafting",
+      "recipe": "prodigymechanics:hot_air_engine"
+    }
+  ]
+}

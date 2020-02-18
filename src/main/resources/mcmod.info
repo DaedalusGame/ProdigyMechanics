@@ -1,0 +1,16 @@
+[
+{
+  "modid": "prodigymechanics",
+  "name": "Prodigy Mechanics",
+  "description": "An mystical mechanics engine that uses hot air.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["BordListian"],
+  "credits": "Lykrast for ProdigyTech",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
