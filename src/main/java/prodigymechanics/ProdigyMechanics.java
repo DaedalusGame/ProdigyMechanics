@@ -12,8 +12,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -29,13 +31,34 @@ public class ProdigyMechanics
 {
     public static final String MODID = "prodigymechanics";
 
+    @SidedProxy(clientSide = "prodigymechanics.ClientProxy",serverSide = "prodigymechanics.ServerProxy")
+    public static IProxy proxy;
+
     @GameRegistry.ObjectHolder("prodigymechanics:hot_air_engine")
     public static BlockHotAirEngine HOT_AIR_ENGINE;
+
+    public static Configuration config;
+
+    public static int MIN_TEMPERATURE;
+    public static double CONVERSION_RATE;
+    public static double MAX_POWER;
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
         MinecraftForge.EVENT_BUS.register(this);
+
+        config = new Configuration(event.getSuggestedConfigurationFile());
+        loadConfig();
+    }
+
+    private void loadConfig() {
+        MIN_TEMPERATURE = config.get( "basic", "minTemperature", 30, "How much temperature is required for the engine to work at all.", 0, Integer.MAX_VALUE).getInt();
+        CONVERSION_RATE = config.get("basic","conversionRate", 1.0 / 8.0, "How much mechanical power (in internal unit) is produced per °C above the minimum temperature", 0.0, Double.POSITIVE_INFINITY).getDouble();
+        MAX_POWER = config.get("basic","maxPower", 200, "How much mechanical power (in internal unit) can be produced by one engine.", 0.0, Double.POSITIVE_INFINITY).getDouble();
+
+        if(config.hasChanged())
+            config.save();
     }
 
     @SubscribeEvent
@@ -49,7 +72,7 @@ public class ProdigyMechanics
 
     @SubscribeEvent
     public void registerItems(RegistryEvent.Register<Item> event) {
-        event.getRegistry().register(new ItemBlockMachineHotAir(HOT_AIR_ENGINE, 30, 0).setRegistryName(HOT_AIR_ENGINE.getRegistryName()));
+        event.getRegistry().register(new ItemBlockMachineHotAir(HOT_AIR_ENGINE, MIN_TEMPERATURE, 0).setRegistryName(HOT_AIR_ENGINE.getRegistryName()));
     }
 
     @SubscribeEvent

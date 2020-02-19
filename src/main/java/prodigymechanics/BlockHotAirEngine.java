@@ -21,7 +21,10 @@ public class BlockHotAirEngine extends BlockMachineActiveable<TileHotAirEngine> 
     }
 
     public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn) {
-        TemperatureHelper.hotAirDamage(entityIn, (this.getTileEntity(worldIn, pos)).getCapability(CapabilityHotAir.HOT_AIR, EnumFacing.UP));
+        TileEntity tile = worldIn.getTileEntity(pos);
+        if(tile instanceof TileHotAirEngine) {
+            TemperatureHelper.hotAirDamage(entityIn, ((TileHotAirEngine) tile).hotAir.getInAirTemperature());
+        }
         super.onEntityWalk(worldIn, pos, entityIn);
     }
 
